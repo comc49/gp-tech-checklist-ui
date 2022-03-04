@@ -5,14 +5,34 @@ import App from './App';
 import { BrowserRouter } from "react-router-dom";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  useQuery,
+  gql
+} from "@apollo/client";
 // 1. import `ChakraProvider` component
 import { ChakraProvider } from '@chakra-ui/react'
+import axios from 'axios';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:3001/graphql',
+  cache: new InMemoryCache()
+});
+
+// Set with credentials globally for sending req with the session cookie
+axios.defaults.withCredentials = true
+
+
 
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider>
       <BrowserRouter>
+      <ApolloProvider client={client}>
         <App />
+      </ApolloProvider>
       </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>,
